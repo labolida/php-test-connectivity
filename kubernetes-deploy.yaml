@@ -13,7 +13,7 @@ spec:
     - containerPort: 80
     env:
     - name: TEST_HOST
-      value: "php-test-001-svc"
+      value: "php-test-002-svc"
     - name: TEST_PORT
       value: "80"
     - name: TEST_ENDPOINT
