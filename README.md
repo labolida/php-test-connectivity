@@ -1,19 +1,20 @@
 # php-test-connectivity
 
-# Containers playground - Quick testing
-
-docker push lmldocker/php-test-connectivity:2.0
+  https://hub.docker.com/repository/docker/lmldocker/php-test-connectivity
 
 
-# GOAL
+## Containers playground - Quick testing
+
+  docker push lmldocker/php-test-connectivity:2.0
+
+## GOAL
 
   Test containers connectivity retrieving text value from one container to another one.
   Example:
   First container request via HTTP a text content from a certain URL.
   You can deploy 2 containers to make this communication as an example.
 
-
-# Source code
+## Source code
 
     index.php
 
@@ -55,7 +56,7 @@ docker push lmldocker/php-test-connectivity:2.0
             echo $_ENV["TEST_CONTENT"];
             ?>
 
-# Starting container with docker
+## Starting container with docker
 
   001
 
@@ -111,53 +112,51 @@ docker push lmldocker/php-test-connectivity:2.0
       REMOTE_CONTENT:I-am-php-test-001-contanier-port-5580
 
 
-
-
 # KUBERNETES
 
-alias k="kubectl"
+    alias k="kubectl"
 
-kubectl apply -f kubernetes-deploy.yaml  --force
-alias kk="kubectl get all -n test -o wide"
-kubectl get all -n test -o wide
+    kubectl apply -f kubernetes-deploy.yaml  --force
+    alias kk="kubectl get all -n test -o wide"
+    kubectl get all -n test -o wide
 
-kubectl get all -n test -o yaml > report.bkp.yaml
+    kubectl get all -n test -o yaml > report.bkp.yaml
 
-kubectl expose pod php-test-001-pod -n test --dry-run=client -o yaml
+    kubectl expose pod php-test-001-pod -n test --dry-run=client -o yaml
 
-docker exec -ti 8bf4b1e7898c /bin/bash
+    docker exec -ti 8bf4b1e7898c /bin/bash
 
-kubectl describe pod/php-test-001-pod -n test
-kubectl describe svc/php-test-001-svc -n test
+    kubectl describe pod/php-test-001-pod -n test
+    kubectl describe svc/php-test-001-svc -n test
 
-  curl http://10.96.245.34:80     ok svc
-  curl http://10.96.218.131:80     ok svc
-  curl http://php-test-002-svc/remote-content.html
-       OK
-  curl http://php-test-001-svc:80/remote-content.html
-       OK
-  curl http://php-test-002-svc/remote-content.php
-       OK I-am-php-test-002-contanier
-  curl http://php-test-001-svc/remote-content.php
-       OK I-am-php-test-001-contanier
+      curl http://10.96.245.34:80     ok svc
+      curl http://10.96.218.131:80     ok svc
+      curl http://php-test-002-svc/remote-content.html
+           OK
+      curl http://php-test-001-svc:80/remote-content.html
+           OK
+      curl http://php-test-002-svc/remote-content.php
+           OK I-am-php-test-002-contanier
+      curl http://php-test-001-svc/remote-content.php
+           OK I-am-php-test-001-contanier
 
-  curl http://php-test-001-svc.test.svc.cluster.local
-       OK
-  root@php-test-001-pod:/etc# curl http://php-test-001-svc.test.svc.cluster.local/remote-content.html
-       Hello, I am the remote content!
+      curl http://php-test-001-svc.test.svc.cluster.local
+           OK
+      root@php-test-001-pod:/etc# curl http://php-test-001-svc.test.svc.cluster.local/remote-content.html
+           Hello, I am the remote content!
 
-export TEST_HOST=php-test-001-svc.test.svc.cluster.local
-export TEST_HOST=php-test-002-svc.test.svc.cluster.local
+    export TEST_HOST=php-test-001-svc.test.svc.cluster.local
+    export TEST_HOST=php-test-002-svc.test.svc.cluster.local
 
-docker exec -ti labolida-cluster-control-plane /bin/bash
-docker exec -ti labolida-cluster-worker2 /bin/bash
+    docker exec -ti labolida-cluster-control-plane /bin/bash
+    docker exec -ti labolida-cluster-worker2 /bin/bash
 
-crictl ps
-crictl pods
+    crictl ps
+    crictl pods
 
-IN CONTAINER-002
-crictl exec -ti 309e729fdaf6f cat /etc/hosts
-crictl exec -ti 309e729fdaf6f /bin/bash
+    IN CONTAINER-002
+    crictl exec -ti 309e729fdaf6f cat /etc/hosts
+    crictl exec -ti 309e729fdaf6f /bin/bash
 
 
 
