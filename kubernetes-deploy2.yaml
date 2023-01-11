@@ -1,0 +1,35 @@
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: php-test-configmap-99
+  namespace: test
+data:
+  TEST_HOST:      "php-test-001-svc"
+  TEST_PORT:      "80"
+  TEST_ENDPOINT:  "remote-content.php"
+  TEST_CONTENT:   "I-am-php-test-099-contanier"
+
+---
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: php-test-099-pod
+  namespace: test
+  labels:
+    tag-name: php-test-099-tag
+spec:
+  containers:
+  - name: php-test-099-container
+    image: lmldocker/php-test-connectivity:2.0
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - name: volmount
+      mountPath: "/volmount"
+      readOnly: true
+  volumes:
+  - name: volmount
+    configMap:
+      name: php-test-configmap-99
